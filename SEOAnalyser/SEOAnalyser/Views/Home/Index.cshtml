@@ -1,0 +1,80 @@
+﻿@model SEOAnalyser.Models.AnalyseContentModel
+@{
+    ViewBag.Title = "SEO Analyser";
+}
+
+<div class="jumbotron">
+    <h1>SEO Analyser</h1>
+    @Html.ValidationMessageFor(model => model.HasInternalError)
+    @using (Html.BeginForm("Index", "Home", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="editor-field">
+            @Html.TextAreaFor(model => model.SearchInput, new { @class = "textarea-fill-parent", @placeholder = ViewConstants.SearchInput_Placeholder })
+            @Html.ValidationMessageFor(model => model.SearchInput)
+        </div>
+        <p class="lead">
+            <div class="row">
+                <div class="col-md-6">
+                    <label>
+                        @Html.CheckBoxFor(model => model.FilterStopWord)
+                        @Html.DisplayName(ViewConstants.FilterStopWord_Label)
+                    </label>
+                    <label>
+                        @Html.CheckBoxFor(model => model.CalculateWordOccurence)
+                        @Html.DisplayName(ViewConstants.CalculateWordOccurence_Label)
+                    </label>
+                    <label>
+                        @Html.CheckBoxFor(model => model.CalculateWordOccurenceInMetaTag)
+                        @Html.DisplayName(ViewConstants.CalculateWordOccurenceInMetaTag_Label)
+                    </label>
+                    <label>
+                        @Html.CheckBoxFor(model => model.CalculateExternalLink)
+                        @Html.DisplayName(ViewConstants.CalculateExternalLink_Label)
+                    </label>
+                    <label>
+                        @Html.ValidationMessageFor(model => model.HasNoValidationChecked)
+                    </label>
+                </div>
+                <div class="col-md-6">
+                    <input type="submit" class="btn btn-primary btn-lg col-xs-12" value="Check up!" />
+                </div>
+            </div>
+        </p>
+    }
+</div>
+
+@if (Model.IsValidModel)
+{
+    <div class="row">
+        @if (Model.CalculateWordOccurence)
+        {
+            <div class="col-md-12">
+                <h2>Word occurences in content</h2>
+                @Html.Partial("Partial/TableResult", Model.WordOccurences)
+            </div>
+        }
+
+        @if (Model.CalculateWordOccurenceInMetaTag)
+        {
+            <div class="col-md-12">
+                <h2>Word occurences from meta tags</h2>
+                @Html.Partial("Partial/TableResult", Model.WordOccurencesFromMetaTags)
+            </div>
+        }
+
+        @if (Model.CalculateExternalLink)
+        {
+            <div class="col-md-12">
+                <h2>External Links</h2>
+                @Html.Partial("Partial/TableResult", Model.ExternalLinks)
+            </div>
+        }
+    </div>
+}
+
+@section scripts {
+    <script>
+        $('.table-bordered').DataTable();
+    </script>
+}
