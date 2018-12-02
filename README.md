@@ -12,3 +12,6 @@ JQuery Datatable
 
 # Design flow
 Start -> User key-in Text or URL -> User submit form -> Web application get content from URL or the input text -> Remove stop-words from content if applicable -> Generate list of words from content if applicable -> Generate list of words from content meta tag if applicable -> Generate list of external links from content if applicable -> End
+
+# Continuous Deployment
+For ease of testing on actual environment, this web application has been integrated with the Azure Cloud Service to perform automated deployment. Feel free to browse through the public site at http://seoanalyser.azurewebsites.net/
